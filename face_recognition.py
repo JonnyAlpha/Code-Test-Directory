@@ -18,7 +18,7 @@ while True:
     
     faces = detect_bounding_box(video_frame)
 
-    cv2.imshow("Face Detection", video_frame)
+    cv2.imshow("Face Detection!!", video_frame)
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 video_capture.release()
