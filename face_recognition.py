@@ -1,3 +1,5 @@
+# face recognition code made by following the guide here:
+# https://www.datacamp.com/tutorial/face-detection-python-opencv
 import cv2
 
 face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
@@ -18,8 +20,9 @@ while True:
     
     faces = detect_bounding_box(video_frame)
 
-    cv2.imshow("Face Detection!!", video_frame)
+    cv2.imshow("Face Detection", video_frame)
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 video_capture.release()
 cv2.destroyAllWindows
+# end of file
