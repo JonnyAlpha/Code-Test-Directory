@@ -35,7 +35,7 @@ for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
     if rms > 200:
         print("Sound Detected")
         led.on()
-        sleep(0.25) 
+        sleep(0.025) 
         led.off()
 stream.stop_stream()
 stream.close()
