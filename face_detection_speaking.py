@@ -1,4 +1,5 @@
 # Facial recognition and detection to check faces found in a webcamera against a known .jpg image
+# Incorporating speaking
 # Code created followng this video tutorial:
 # https://www.youtube.com/watch?v=pQvkoaevVMk
 # N.B. before running the program download the 
@@ -7,6 +8,8 @@ import threading
 
 import cv2
 from deepface import DeepFace
+from time import sleep
+
 
 #cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 cap = cv2.VideoCapture(0)
@@ -17,7 +20,7 @@ counter = 0
 
 face_match = False
 
-reference_img = cv2.imread("reference.jpg",1) # reference.jpg is the known image picture file 
+reference_img = cv2.imread("reference.jpg",1)
 
 
 def check_face(frame):
@@ -33,6 +36,11 @@ def check_face(frame):
     except ValueError:
         face_match = False
 
+def hello_dave(): #function to incorporate audio response to known face
+    print("hello dave")
+    sleep(2)
+
+    
 while True:
     ret, frame = cap.read()
 
@@ -47,7 +55,7 @@ while True:
 
         if face_match:
             cv2.putText(frame, "MATCH", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
-
+            hello_dave()
         else:
             cv2.putText(frame, "NO MATCH", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
 
