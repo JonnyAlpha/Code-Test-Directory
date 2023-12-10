@@ -1,6 +1,6 @@
 # Sound_level - this program reads the output volume level and stores it as a variable rms
 # We then check the value of rms and if greater than a specific value (we have sound) we turn on an LED
-# Needs to be tested on a Pi
+# Tested and working on a Pi3 running OS Bullseye 
 
 from gpiozero import LED
 import pyaudio
