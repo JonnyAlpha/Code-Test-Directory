@@ -1,5 +1,5 @@
 # Sound_level - this program reads the output volume level and shows it as an integer
-# Tested 10/12/23
+# Tested 10/12/23 on a working Pi by Bill H
 
 import pyaudio
 import audioop
