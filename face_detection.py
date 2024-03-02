@@ -1,63 +1,33 @@
-# Facial recognition and detection to check faces found in a webcamera against a known .jpg image
-# Code created followng this video tutorial:
-# https://www.youtube.com/watch?v=pQvkoaevVMk
-# N.B. before running the program download the 
-
-import threading
-
+# face recognition code made by following the guide here:
+# https://www.datacamp.com/tutorial/face-detection-python-opencv
 import cv2
-from deepface import DeepFace
 
-#cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
-counter = 0
-
-face_match = False
-
-reference_img = cv2.imread("reference.jpg",1) # reference.jpg is the known image picture file 
-
-
-def check_face(frame):
-    global face_match
-    
-    try:
-        if DeepFace.verify(frame, reference_img.copy())['verified']:
-            face_match = True
-
-        else:
-            face_match = False
-    
-    except ValueError:
-        face_match = False
+video_capture = cv2.VideoCapture(0)
+video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+def detect_bounding_box(vid):
+    gray_image = cv2.cvtColor(vid, cv2.COLOR_BGR2GRAY)
+    faces = face_classifier.detectMultiScale(gray_image, 1.1, 5, minSize=(40, 40))
+    for (x, y, w, h) in faces:
+        #cv2.rectangle(video_frame, (x, y), (x + w, y + h), (0, 255, 0), 4)
+        #cv2.putText(video_frame, "Face Identified", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
+        cv2.rectangle(vid, (x, y), (x + w, y + h), (0, 255, 0), 4)
+        cv2.putText(vid, "Face Identified", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
+    return faces
 
 while True:
-    ret, frame = cap.read()
 
-    if ret:
-        if counter % 30 == 0:
-            try:
-                threading.Thread(target=check_face, args=(frame.copy(),)).start()
-            except ValueError:
-                pass
-        
-        counter += 1
-
-        if face_match:
-            cv2.putText(frame, "MATCH", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
-
-        else:
-            cv2.putText(frame, "NO MATCH", (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
-
-        cv2.imshow("video", frame)
-
-
-
-
-    key = cv2.waitKey(1)
-    if key == ord("q"):
+    result, video_frame = video_capture.read()
+    if result is False:
         break
 
-cv2.destroyAllWindows()
+    faces = detect_bounding_box(video_frame)
+
+    cv2.imshow("Face Detection", video_frame)
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        break
+video_capture.release()
+cv2.destroyAllWindows
+# end of file

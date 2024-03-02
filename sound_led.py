@@ -1,6 +1,6 @@
 # Sound_level - this program reads the output volume level and stores it as a variable rms
 # We then check the value of rms and if greater than a specific value (we have sound) we turn on an LED
-# Tested and working on a Pi3 running OS Bullseye 
+# Needs to be tested on a Pi.
 
 from gpiozero import LED
 import pyaudio
@@ -28,14 +28,14 @@ stream = p.open(format=FORMAT,
 
 
 for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
-       data = stream.read(CHUNK, 
-                        exception_on_overflow=False)
+    data = stream.read(CHUNK, 
+    exception_on_overflow=False)
     rms = audioop.rms(data, 2)   
     print(rms)
     if rms > 200:
         print("Sound Detected")
         led.on()
-        sleep(0.025) 
+        sleep(0.25) 
         led.off()
 stream.stop_stream()
 stream.close()
